@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Advanced AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 15px;
+            width: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .user {
+            font-weight: bold;
+            color: #007BFF;
+        }
+        .assistant {
+            font-weight: bold;
+            color: #28A745;
+        }
+        .input-container {
+            margin-top: 20px;
+        }
+        #user_message {
+            width: 70%;
+            padding: 5px;
+        }
+        .send-btn {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Advanced AI Chatbot</h1>
+    <div class="chat-container" id="chat_container">
+        <!-- Chat messages appear here -->
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user_message" placeholder="Type your message..." />
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userMsg = document.getElementById("user_message").value;
+            if (!userMsg) return;
+
+            const chatContainer = document.getElementById("chat_container");
+
+            // Display user's message
+            chatContainer.innerHTML += `<div class="message user">You: ${userMsg}</div>`;
+            document.getElementById("user_message").value = "";
+
+            // Send POST request
+            const formData = new FormData();
+            formData.append("user_message", userMsg);
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+
+                // Display AI reply
+                chatContainer.innerHTML += `<div class="message assistant">AI: ${data.reply}</div>`;
+                
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            } catch (err) {
+                chatContainer.innerHTML += `<div class="message assistant">Error: ${err.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
