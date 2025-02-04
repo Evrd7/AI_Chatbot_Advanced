@@ -58,5 +58,8 @@ def chat():
 
     return jsonify({"reply": assistant_reply})
 
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 10000))  # Use Render's dynamic port
+    app.run(host="0.0.0.0", port=port, debug=True)
