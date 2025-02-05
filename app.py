@@ -1,3 +1,4 @@
+from flask_cors import CORS
 import os
 import openai
 from flask import Flask, render_template, request, jsonify, session
@@ -7,6 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  # This loads variables from .env into os.environ
 
 app = Flask(__name__)
+CORS(app)
 
 # 1. Set a secret key for sessions (in production, keep it secret!)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "some_dev_key")
