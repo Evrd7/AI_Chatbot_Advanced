@@ -11,19 +11,39 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
         }
 
-        /* Chat UI Styling */
+        /* Floating Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Floating Chat Container */
         .chat-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
             width: 350px;
             height: 500px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             background: white;
-            overflow: hidden;
-            display: flex;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
             flex-direction: column;
         }
 
@@ -34,6 +54,16 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            position: relative;
+        }
+
+        .chat-header .close-btn {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: white;
         }
 
         .chat-box {
@@ -95,9 +125,14 @@
 </head>
 <body>
 
-    <div class="chat-container">
+    <!-- Floating Chat Button -->
+    <button class="chat-button" id="openChat">💬 Chat with us!</button>
+
+    <!-- Chat Container (Hidden by Default) -->
+    <div class="chat-container" id="chatContainer">
         <div class="chat-header">
-            BTR AI Chatbot - Your Virtual Assistant
+            BTR AI Chatbot
+            <span class="close-btn" id="closeChat">&times;</span>
         </div>
         <div class="chat-box" id="chat-box">
             <!-- Messages will appear here -->
@@ -109,6 +144,24 @@
     </div>
 
     <script>
+        // Get chat elements
+        const chatButton = document.getElementById("openChat");
+        const chatContainer = document.getElementById("chatContainer");
+        const closeChat = document.getElementById("closeChat");
+
+        // Show chat on button click
+        chatButton.addEventListener("click", () => {
+            chatContainer.style.display = "flex";
+            chatButton.style.display = "none";
+        });
+
+        // Close chat window
+        closeChat.addEventListener("click", () => {
+            chatContainer.style.display = "none";
+            chatButton.style.display = "block";
+        });
+
+        // Send Message to Flask API
         function sendMessage() {
             const userMessage = document.getElementById("user_message").value;
             if (!userMessage.trim()) return;
@@ -130,13 +183,14 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Display Bot Response
+                // Display AI Response
                 chatBox.innerHTML += `<div class="message bot-message">AI: ${data.reply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             })
             .catch(error => console.error("Error:", error));
         }
 
+        // Press Enter to Send Message
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 sendMessage();
