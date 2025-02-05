@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
+    <title>BTR AI Chatbot</title>
 
     <!-- Bootstrap for Styling -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* 🔹 Update Chat Container for Iframe Display */
+        /* Chat UI Styling */
         .chat-container {
             width: 350px;
             height: 500px;
@@ -23,6 +23,8 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             background: white;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .chat-header {
@@ -35,7 +37,7 @@
         }
 
         .chat-box {
-            height: 400px;
+            flex: 1;
             overflow-y: auto;
             padding: 15px;
             display: flex;
@@ -64,7 +66,7 @@
 
         .input-container {
             display: flex;
-            padding: 15px;
+            padding: 10px;
             background: #fff;
             border-top: 1px solid #ddd;
         }
@@ -95,11 +97,10 @@
 
     <div class="chat-container">
         <div class="chat-header">
-            <img src="" alt="" class="rounded-circle">
             BTR AI Chatbot - Your Virtual Assistant
         </div>
         <div class="chat-box" id="chat-box">
-            <!-- Messages will be displayed here -->
+            <!-- Messages will appear here -->
         </div>
         <div class="input-container">
             <input type="text" id="user_message" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
@@ -114,7 +115,7 @@
 
             const chatBox = document.getElementById("chat-box");
 
-            // Add user message
+            // Display User Message
             chatBox.innerHTML += `<div class="message user-message">You: ${userMessage}</div>`;
             document.getElementById("user_message").value = "";
 
@@ -129,7 +130,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Add bot response
+                // Display Bot Response
                 chatBox.innerHTML += `<div class="message bot-message">AI: ${data.reply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             })
