@@ -44,9 +44,9 @@ def chat():
 
     # Call OpenAI
     response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=conversation_history,
-        max_tokens=1000,
+        max_tokens=5000,
         temperature=0.7
     )
 
